@@ -1,8 +1,8 @@
 # Інкапсуляція(Робити дані приватними) , Наслідування , Поліморфізм = ООП
 # __  два андерскора перед назвою робить  метод або властивості приватними
 # метод завжди має приймати self першим параметром
-
-
+#def __init__ - конструктор
+#def __del__ - деструктор
 
 class Person:
 
@@ -18,18 +18,16 @@ class Person:
     def person_info(self):
         print(self.__name, " <-> ", self.__age, " years old")
 
-    
     @property
     def name(self):
         return self.__name
 
-            
-    #getter = @property - щоб доступитись до даних в класі
+    # getter = @property 
     @property
     def age(self):
         return self.__age
-    
-    #setter - Щоб змінити дані
+
+    #setter
     @age.setter
     def age(self, new_age):
         if self.__age == new_age:
@@ -72,3 +70,10 @@ person_list.append(sara)
 for person in person_list:
     # item.person_info()
     print(person.name, '=', person.age)
+    person.age += 1
+
+print("===========================")
+
+for person in person_list:
+    # person.person_info()
+    print(person.name, " = ", person.age)
