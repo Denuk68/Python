@@ -18,14 +18,18 @@ class Person:
     def person_info(self):
         print(self.__name, " <-> ", self.__age, " years old")
 
+    
     @property
     def name(self):
         return self.__name
 
+            
+    #getter = @property - беремо дані  з класу
     @property
     def age(self):
         return self.__age
-
+    
+    #setter - змінюємо дані
     @age.setter
     def age(self, new_age):
         if self.__age == new_age:
