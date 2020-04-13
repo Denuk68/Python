@@ -26,7 +26,7 @@ class Bank_Account:
             print("\n Insufficient balance  ")
 
     def recent_transactions(self):
-        if len(self.__transactions) < 1:
+        if len(self.__transactions) < 0:
             return None
         else:
             return self.__transactions.pop()
@@ -41,14 +41,15 @@ class Bank_Account:
         return self.__currency
 
 
-account = Bank_Account(random.randint(100000,999999), "$")
+account = Bank_Account(random.randint(100000,999999), "USD")
 print('account number =', account.get_account_num())
 print('account balance =', account.get_balance())
-
 print('account currency =', account.get_currency())
-print('deposit =', account.add_money(20), "$")
-print('recent transaction is:', account.recent_transactions(), "$")
-print('account balance =', account.get_balance(), "$")
-print('withdrawal =', account.withdraw_money(50), "$")
-print('recent transaction is:', account.recent_transactions(), "$")
-print('account balance =', account.get_balance(), "$")
+
+print('deposit =', account.add_money(0), "USD")
+print('recent transaction is:', account.recent_transactions(), "USD")
+print('account balance =', account.get_balance(), "USD")
+
+print('withdrawal =', account.withdraw_money(0), "USD")
+print('recent transaction is:', account.recent_transactions(), "USD")
+print('account balance =', account.get_balance(), "USD")
