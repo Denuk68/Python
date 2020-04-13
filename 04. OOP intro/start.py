@@ -1,7 +1,7 @@
 # Інкапсуляція(Робити дані приватними) , Наслідування , Поліморфізм = ООП
 # __  два андерскора перед назвою робить  метод або властивості приватними
 # метод завжди має приймати self першим параметром
-# @property - анотація
+
 
 
 class Person:
@@ -24,12 +24,12 @@ class Person:
         return self.__name
 
             
-    #getter = @property - беремо дані  з класу
+    #getter = @property - щоб доступитись до даних в класі
     @property
     def age(self):
         return self.__age
     
-    #setter - змінюємо дані
+    #setter - Щоб змінити дані
     @age.setter
     def age(self, new_age):
         if self.__age == new_age:
