@@ -1,6 +1,6 @@
 from lib.person import Users
 
-user = Users('John', 'Snow', 'j_snow', 'js@gmail.com', "jonh's_secret")
+user = Users('John', 'Snow', 'j_snow', 'js@gmail.com', "Jonh's_secret")
 user.show_user_info()
 # user.save_user()
 

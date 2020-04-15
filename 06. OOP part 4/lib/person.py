@@ -13,7 +13,7 @@ class Users:
 
     def show_user_info(self):
         print('First name: ', self.__first_name, '\nLast_name: ',
-              self.__last_name, '\nUsername: ', self.__username, '\nEmail:', self.__email, '\nPassword: *******')
+              self.__last_name, '\nUsername: ', self.__username, '\nEmail:', self.__email, '\nPassword: ********')
 
     
 
