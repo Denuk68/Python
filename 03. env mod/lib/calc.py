@@ -1,3 +1,4 @@
+#if __name__ == "__main__" - щоб імпортувати
 if __name__ == "__main__":
     add,
     subtract,
