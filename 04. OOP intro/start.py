@@ -1,8 +1,16 @@
 # Інкапсуляція(Робити дані приватними) , Наслідування , Поліморфізм = ООП
+
 # __  два андерскора перед назвою робить  метод або властивості приватними
 # метод завжди має приймати self першим параметром
-#def __init__ - конструктор
-#def __del__ - деструктор
+# def __init__ - конструктор
+# def __del__ - деструктор
+
+# getter - ним віддаємо значення яке знаходиться в класі(Можемо доступитись до приватного поля завдяки публічному методу)
+# @property = це доступ до нашої властивості, тобто ми кажем що це getter.
+# setter змінює нашу властивість.
+
+# Антотація @property(getter) і setter ======>  (Можна присвоювати анотацію тоді коли це потрібно)
+
 
 class Person:
 
@@ -18,16 +26,17 @@ class Person:
     def person_info(self):
         print(self.__name, " <-> ", self.__age, " years old")
 
+    # getter
     @property
     def name(self):
         return self.__name
 
-    # getter = @property 
+    # getter
     @property
     def age(self):
         return self.__age
 
-    #setter
+    # setter
     @age.setter
     def age(self, new_age):
         if self.__age == new_age:
@@ -35,24 +44,32 @@ class Person:
         else:
             self.__age = new_age
 
+    # setter
+    @name.setter
+    def name(self, new_name):
+        if self.name == new_name:
+            print("The same name")
+        else:
+            self.__name = new_name
+
 
 bill = Person("Billy", 56)
+# bill.person_info()
+
+
 # print("Bill age before => ", bill.name)
 # print("Bill age before => ", bill.age)
+# bill.name = "John"
 # bill.age = 58
-# bill.name = "Test" Error
 # print("Bill age after => ", bill.name)
 # print("Bill age after => ", bill.age)
 
-# bill.person_info()
 
-# print(bill.get_name())
-# print("Before +> ", bill.get_age())
-# bill.set_age(70)
-# print("After +> ", bill.get_age())
+
+
 
 stive = Person("Stiven", 26)
-# stive.person_info()
+# # stive.person_info()
 
 adam = Person('Adam', 34)
 eva = Person('Eva', 27)
@@ -72,8 +89,8 @@ for person in person_list:
     print(person.name, '=', person.age)
     person.age += 1
 
-print("===========================")
+# print("===========================")
 
-for person in person_list:
-    # person.person_info()
-    print(person.name, " = ", person.age)
+# for person in person_list:
+#     # person.person_info()
+#     print(person.name, " = ", person.age)
