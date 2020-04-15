@@ -2,7 +2,7 @@ class DiscountCard:
     def __init__(self, *, date="01/04/2020", amount=0, card_number):
         self.__card_number = card_number
         self.__discount = 1
-        self.__amount = 0  # приховане поле
+        self.__amount = 0  
 
         if self.__check_date(date):
             self.__date = date
@@ -10,7 +10,8 @@ class DiscountCard:
             self.__date = '01/04/2020'
 
         if amount != 0:
-            self.__add_money(amount)
+            self.__add_money(amount)    
+
 
     # Перевірка чи можна конвертувати отримане значення в число (int)
 
@@ -42,20 +43,18 @@ class DiscountCard:
         except ValueError:
             return False
         else:
-            return True 
-    
-
-    #  Купляти товар з використанням карточки на знижку
-    def buy_with_discount(self, amount):
-        if self.__check_float(amount):
-            self.__add_money(amount)    
-
-
+            return True  
+  
     # Додавання грошей на рахунок і перерахунок знижки
     def __add_money(self, amount):
         if self.__check_float(amount) and float(amount) > 0:
             self.__amount += float(amount)
-            self.__discount = 1 + self.__amount // 1000 
+            self.__discount = 1 + self.__amount // 1000  
+
+    #  Купляти товар з використанням карточки на знижку
+    def buy_with_discount(self, amount):
+        if self.__check_float(amount):
+            self.__add_money(amount)                   
 
     #  Виводити інформацію про поточну величину знижки
     def print_discount(self):
@@ -73,7 +72,6 @@ card1 = DiscountCard(card_number=1, amount='400', date='11/01/2020')
 card2 = DiscountCard(card_number=2, amount=800)
 print(card1, card2, sep="\n")
 print("="*51)
-
 card1.buy_with_discount("1200")
 card1.print_discount()
 print(card1)

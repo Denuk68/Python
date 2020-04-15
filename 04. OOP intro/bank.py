@@ -41,7 +41,7 @@ class Bank_Account:
         return self.__currency
 
 
-account = Bank_Account(random.randint(100000,999999), "USD")
+account = Bank_Account(random.randint(100000,999999), "USD" ,1000)
 print('account number =', account.get_account_num())
 print('account balance =', account.get_balance())
 print('account currency =', account.get_currency())
