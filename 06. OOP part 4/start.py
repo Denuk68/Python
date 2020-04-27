@@ -1,12 +1,26 @@
 from lib.person import Users
 
-user = Users('John', 'Snow', 'j_snow', 'js@gmail.com', "Jonh's_secret")
-user.show_user_info()
-# user.save_user()
+# До роботи яку робили в класі доробити:
+# 1. Реєстрацію нового користувача з перевіркою (перевірити чи коистувач вже є в файлі)
 
-user2 = Users('Bran', 'Stark', 'bs', 'stark@winter.com', 'passBran')
-user2.show_user_info()
-# user2.save_user()
+user = Users("John", "Snow", "jsnow", "e@ma.il", "pa$$word")
+user.register()
 
-# users = user.show_all_users()
-# print(users)
+user = Users("John", "Snow", "jsnow4", "e@ma.il", "pa$$word")
+user.register()
+
+# 2. Логін користувача (логін по username з перевіркою паролю.)
+
+print("User logged in:", Users.login("jsnow", "pass"))
+print("User logged in:", Users.login("jsnow2", "pass"))
+print("User logged in:", Users.login("jsnow", "pa$$word"))
+
+# 3. Видалення користувача (по username)
+
+result = Users.remove("")
+print("User was removed:", result)
+
+result = Users.remove("jsnow3")
+print("User was removed:", result)
+
+result = Users.remove("jsnow")

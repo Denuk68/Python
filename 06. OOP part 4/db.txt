@@ -1,10 +1,1 @@
-John#Snow#j_snow#js@gmail.com#jonh's_secret
-Bran#Stark#bs#stark@winter.com#passBran
-John#Snow#j_snow#js@gmail.com#jonh's_secret
-Bran#Stark#bs#stark@winter.com#passBran
-John#Snow#j_snow#js@gmail.com#jonh's_secret
-Bran#Stark#bs#stark@winter.com#passBran
-John#Snow#j_snow#js@gmail.com#jonh's_secret
-Bran#Stark#bs#stark@winter.com#passBran
-John#Snow#j_snow#js@gmail.com#jonh's_secret
-Bran#Stark#bs#stark@winter.com#passBran
+John#Snow#jsnow4#e@ma.il#pa$$word
