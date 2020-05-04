@@ -26,7 +26,8 @@ class db_manager:
                 answer = self.__register()
                 print(answer)
             elif choice == 2:
-                print("Login")
+                login = self.__login()
+                print(login)
             elif choice == 4:
                 delete = self.__delete()
                 print(delete)
@@ -35,6 +36,7 @@ class db_manager:
                 print("Bye!")
             else:
                 print("Wrong choise")
+
 
     def __register(self):
         username = input("Enter username: ")
@@ -58,20 +60,27 @@ class db_manager:
             return "User created"
 
 
-
-
     def __delete(self):
-        delete_name = input('Enter name delete : ')
-          
-        self.__cursor.execute(
-            "DELETE FROM users WHERE username = '" + delete_name + "'")
-        self.__db.commit()
-        
-        return ('User ' + delete_name + ' delete')
-      
-        
-        
-        
-        
+        username = input("Enter username: ")
+        self.__cursor.execute("SELECT * FROM users WHERE username='" + username + "'")
+        result = self.__cursor.fetchone()
+
+        if result != None:
+            sql = "DELETE FROM users WHERE username = '" + username + "'"
+            self.__cursor.execute(sql) 
+            self.__db.commit() 
+        else: 
+            return 'No match found'
 
 
+    # def  __login(self):
+    #     email = input('Enter email: ')
+    #     password = input('Enter password: ')
+    #     self.__cursor.execute(
+    #         "SELECT * FROM users WHERE username='" + email + "'AND password = '" + password +"'")
+    #     result = self.__cursor.fetchone()
+
+    #     if result != None:
+    #         return 'You are login'
+    #     else:
+    #         return 'False email or password'
