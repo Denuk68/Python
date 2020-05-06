@@ -4,7 +4,6 @@ if __name__ == "__main__":
 
 
 class db_manager:
-
     def __init__(self, host, user, passwd):
         self.__db = mysql.connector.connect(
             host=host,
@@ -14,8 +13,9 @@ class db_manager:
         self.__cursor = self.__db.cursor()
         self.__cursor.execute("CREATE DATABASE IF NOT EXISTS pythonlogin")
         self.__cursor.execute("USE pythonlogin")
-        self.__cursor.execute(
-            "CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255))")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255))")
+
+
 
     def menu(self):
         exit = False
@@ -47,9 +47,9 @@ class db_manager:
         if password != re_password:
             return "Password dont match"
 
-        self.__cursor.execute(
-            "SELECT * FROM users WHERE username='" + username + "'")
+        self.__cursor.execute("SELECT * FROM users WHERE username='" + username + "'")
         result = self.__cursor.fetchone()
+
         if result != None:
             return "User exists"
         else:
@@ -65,22 +65,22 @@ class db_manager:
         self.__cursor.execute("SELECT * FROM users WHERE username='" + username + "'")
         result = self.__cursor.fetchone()
 
-        if result != None:
-            sql = "DELETE FROM users WHERE username = '" + username + "'"
-            self.__cursor.execute(sql) 
+        if result != None:           
+            self.__cursor.execute("DELETE FROM users WHERE username = '" + username + "'") 
             self.__db.commit() 
         else: 
             return 'No match found'
 
 
-    # def  __login(self):
-    #     email = input('Enter email: ')
-    #     password = input('Enter password: ')
-    #     self.__cursor.execute(
-    #         "SELECT * FROM users WHERE username='" + email + "'AND password = '" + password +"'")
-    #     result = self.__cursor.fetchone()
+    def  __login(self):
+        email = input('Enter email: ')
+        password = input('Enter password: ')
 
-    #     if result != None:
-    #         return 'You are login'
-    #     else:
-    #         return 'False email or password'
+        self.__cursor.execute("SELECT * FROM users WHERE email ='" + email + "' AND password = '" + password + "'")
+        result = self.__cursor.fetchone()
+        
+
+        if result != None:
+            return 'You are login'
+        else:
+            return 'False email or password'
