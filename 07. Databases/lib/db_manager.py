@@ -41,8 +41,8 @@ class db_manager:
                 searchByUsername = self.__searchByUsername()
                 print(searchByUsername)
             elif choice == 7:
-                searchByPassword = self.__searchByPassword()
-                print(searchByPassword)
+                searchByEmail = self.__searchByEmail()
+                print(searchByEmail)
             elif choice == 0:
                 exit = True
                 print("Bye!")
@@ -136,23 +136,24 @@ class db_manager:
 
         self.__cursor.execute('SELECT "User: " , username , " Email : " , email  FROM users WHERE username = "' + username +'"')
         result = self.__cursor.fetchall()
-
-        if result != None:
+        
+        
+        if len(result) > 0:
             return result
         else:
-            return ("User not found")
+            return "User not found"
 
 
-    def __searchByPassword(self):
-        password = input("Enter password: ")
+    def __searchByEmail(self):
+        email = input("Enter email: ")
 
-        self.__cursor.execute('SELECT "User: " , username , " Email : " , email  FROM users WHERE password = "' + password +'"')
+        self.__cursor.execute('SELECT "User: " , username , " Email : " , email  FROM users WHERE email = "' + email +'"')
         result = self.__cursor.fetchall()
 
-        if result != None:
+        if len(result) > 0:
             return result
         else:
-            return ("User not found")
+            return "User not found"
 
 
 
