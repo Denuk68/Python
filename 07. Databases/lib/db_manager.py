@@ -34,11 +34,21 @@ class db_manager:
             elif choice == 4:
                 delete = self.__delete()
                 print(delete)
+            elif choice == 5:
+                showAllUsers = self.__showAllUsers()
+                print(showAllUsers)
+            elif choice == 6:
+                searchByUsername = self.__searchByUsername()
+                print(searchByUsername)
+            elif choice == 7:
+                searchByPassword = self.__searchByPassword()
+                print(searchByPassword)
             elif choice == 0:
                 exit = True
                 print("Bye!")
             else:
                 print("Wrong choise")
+
 
 
     def __register(self):
@@ -50,8 +60,7 @@ class db_manager:
         if password != re_password:
             return "Password dont match"
 
-        self.__cursor.execute(
-            "SELECT * FROM users WHERE username='" + username + "'")
+        self.__cursor.execute("SELECT * FROM users WHERE username='" + username + "'")
         result = self.__cursor.fetchone()
 
         if result != None:
@@ -62,7 +71,6 @@ class db_manager:
             self.__cursor.execute(sql, val)
             self.__db.commit()
             return "User created"
-
 
 
     def __login(self):
@@ -81,8 +89,7 @@ class db_manager:
     def __edit(self):
         user_edit = input('Enter username who you want edit : ')
 
-        self.__cursor.execute(
-            "SELECT * FROM users WHERE username='" + user_edit + "'")
+        self.__cursor.execute("SELECT * FROM users WHERE username='" + user_edit + "'")
         result = self.__cursor.fetchone()
 
         if result != None:
@@ -106,16 +113,55 @@ class db_manager:
 
     def __delete(self):
         username = input("Enter username: ")
-        self.__cursor.execute(
-            "SELECT * FROM users WHERE username='" + username + "'")
+        self.__cursor.execute("SELECT * FROM users WHERE username='" + username + "'")
         result = self.__cursor.fetchone()
 
         if result != None:
-            self.__cursor.execute(
-                "DELETE FROM users WHERE username = '" + username + "'")
+            self.__cursor.execute("DELETE FROM users WHERE username = '" + username + "'")
             self.__db.commit()
         else:
             return 'No match found'
+
+    
+    def __showAllUsers(self):
+        self.__cursor.execute('SELECT "User: " , username , " Email : " , email  FROM users')
+        result = self.__cursor.fetchall()
+
+        if result != None: 
+            return result
+
+
+    def __searchByUsername(self):
+        username = input("Enter username: ")
+
+        self.__cursor.execute('SELECT "User: " , username , " Email : " , email  FROM users WHERE username = "' + username +'"')
+        result = self.__cursor.fetchall()
+
+        if result != None:
+            return result
+        else:
+            return ("User not found")
+
+
+    def __searchByPassword(self):
+        password = input("Enter password: ")
+
+        self.__cursor.execute('SELECT "User: " , username , " Email : " , email  FROM users WHERE password = "' + password +'"')
+        result = self.__cursor.fetchall()
+
+        if result != None:
+            return result
+        else:
+            return ("User not found")
+
+
+
+        
+
+    
+    
+              
+           
 
 
     
