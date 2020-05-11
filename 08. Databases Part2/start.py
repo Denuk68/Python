@@ -1,5 +1,5 @@
-from lib.db_manager import db_manager
-from lib.settings import *
+from lib.db_manager import Db_manager
+from lib.settings import HOST, USERNAME, PASSWORD
 
-lm = db_manager(HOST, USERNAME, PASSWORD)
-lm.menu()
+m = Db_manager(HOST, USERNAME, PASSWORD)
+m.menu()
