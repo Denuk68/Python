@@ -36,11 +36,9 @@ class db_manager:
                 answer = self.__search_by_country_code()
                 print(answer)
             elif choice == 4:
-                answer = self.__top_total_confirmed()  
-                (answer)          
+                self.__top_total_confirmed()                        
             elif choice == 5:
-                answer = self.__top_total_recovered() 
-                print(answer)             
+                self.__top_total_recovered()                          
             elif choice == 0:
                 exit = True
                 print("Bye!")
@@ -96,7 +94,7 @@ class db_manager:
         result = self.__cursor.fetchall()        
         for item in result:
             print(item[1], '| TotalConfirmed - ', item[5])
-        return(print('-'*45))
+    
         
 
     
@@ -106,7 +104,7 @@ class db_manager:
         result = self.__cursor.fetchall()
         for item in result:
             print(item[1], '| TotalRecovered - ', item[9])
-        return(print('-'*45))
+        
         
 
        
