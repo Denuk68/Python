@@ -1,93 +1,84 @@
 import mysql.connector
 import requests
 from lib.settings import COVID19_URL
+if __name__ == "__main__":
+    db_manager
 
 
-class Db_manager:
+class db_manager:
+
     def __init__(self, host, user, passwd):
         self.__db = mysql.connector.connect(
             host=host,
             user=user,
             passwd=passwd
         )
-        self.__cursor = self.__db.cursor(dictionary=True)
+        self.__cursor = self.__db.cursor()
+        self.__cursor.execute("CREATE DATABASE IF NOT EXISTS COVID19")
+        self.__cursor.execute("USE COVID19")
         self.__cursor.execute(
-            "CREATE DATABASE if not exists `Covid19`;")
-        self.__cursor.execute("use `Covid19`")
+            "CREATE TABLE IF NOT EXISTS Global (id INT AUTO_INCREMENT PRIMARY KEY, NewConfirmed INT(10), TotalConfirmed INT(10), NewDeaths INT(10), TotalDeaths INT(10), NewRecovered INT(10), TotalRecovered INT (10))")
         self.__cursor.execute(
-            "CREATE TABLE if NOT EXISTS Global (id int auto_increment primary key, NewConfirmed int, TotalConfirmed int, NewDeaths int, TotalDeaths int, NewRecovered int, TotalRecovered int, Date DATETIME);")
-        self.__cursor.execute(
-            "CREATE TABLE if NOT EXISTS Countries (id int auto_increment primary key, Country varchar(255), CountryCode varchar(12), Slug varchar(255), NewConfirmed int, TotalConfirmed int, NewDeaths int, TotalDeaths int, NewRecovered int, TotalRecovered int, Date DATETIME);")
+            "CREATE TABLE IF NOT EXISTS Countries (id INT AUTO_INCREMENT PRIMARY KEY, Country VARCHAR(255), CountryCode VARCHAR(12), Slug VARCHAR(255), NewConfirmed INT(10),TotalConfirmed INT(10), NewDeaths INT(10), TotalDeaths INT(10), NewRecovered INT(10), TotalRecovered INT (10), Date VARCHAR(255))")
 
     def menu(self):
         exit = False
         while not exit:
             choice = int(input(
-                "1. Update data\n2. Search by country name\n3. Search by country code\n0. Exit\n"))
+                "1. Update data\n2. Search by country\n3. Search by country code\n0. Exit\n====>> "))
             if choice == 1:
-                print("Update")
-                self.__update_covid_data()
+                answer = self.__update_covid_data()
+                print(answer)
             elif choice == 2:
-                print("Search by country name")
-                self.__search_by_country_name()
+                answer = self.__search_by_countries()
+                print(answer)
             elif choice == 3:
-                print("Search by country code")
-                self.__search_by_country_code()
+                answer = self.__search_by_country_code()
+                print(answer)
             elif choice == 0:
-                print("Exit")
                 exit = True
+                print("Bye!")
             else:
-                print("Wrong choice")
+                print("Wrong choise")
 
     def __update_covid_data(self):
-        """1. Update covid database"""
-        covid_data = requests.get(COVID19_URL)
-        covid_data = covid_data.json()
+        covid_data = requests.get(COVID19_URL).json()
+        self.__cursor.execute("TRUNCATE TABLE global;")
+        sql = "INSERT into global (NewConfirmed,TotalConfirmed,NewDeaths,TotalDeaths,NewRecovered,TotalRecovered) VALUES(%s,%s,%s,%s,%s,%s)"
+        value = (covid_data['Global']["NewConfirmed"], covid_data['Global']["TotalConfirmed"], covid_data['Global']["NewDeaths"],
+                 covid_data['Global']["TotalDeaths"], covid_data['Global']["NewRecovered"], covid_data['Global']["TotalRecovered"])
+        self.__cursor.execute(sql, value)
 
-        # Global
-        global_ = covid_data['Global']
-        query = """ INSERT INTO Global (NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, Date)
-        VALUES ('%s', '%s', '%s', '%s', '%s', '%s', STR_TO_DATE("%s",'%%Y-%%m-%%dT%%TZ'))
-        """ % (global_["NewConfirmed"], global_["TotalConfirmed"], global_["NewDeaths"], global_["TotalDeaths"], global_["NewRecovered"], global_["TotalRecovered"], covid_data['Date'])
-        self.__cursor.execute("TRUNCATE TABLE Global;")
-        self.__cursor.execute(query)
-
-        # Countries
-        self.__cursor.execute("TRUNCATE TABLE Countries;")
+        self.__cursor.execute("TRUNCATE TABLE countries")
         for item in covid_data['Countries']:
-            query = """
-            INSERT INTO Countries (Country, CountryCode, Slug, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, Date) VALUES ("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", STR_TO_DATE("%s",'%%Y-%%m-%%dT%%TZ')) 
-            """ % (item['Country'], item['CountryCode'], item['Slug'], item['NewConfirmed'], item['TotalConfirmed'], item['NewDeaths'], item['TotalDeaths'], item['NewRecovered'], item['TotalRecovered'], item['Date'])
-            self.__cursor.execute(query)
-        self.__db.commit()
+            sql = "INSERT into countries(Country, CountryCode, Slug, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, Date) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            values = (item["Country"], item["CountryCode"], item["Slug"], item["NewConfirmed"], item["TotalConfirmed"],
+                      item["NewDeaths"], item["TotalDeaths"], item["NewRecovered"], item["TotalRecovered"], item["Date"])
+            self.__cursor.execute(sql, values)
 
-    def __search_by_country_name(self):
-        """2. Показати інформацію по назві країни (Ukraine)"""
-        country = input("Enter country name (Ukraine): ")
+        self.__db.commit()
+        return "Database updated!"
+
+
+
+    def __search_by_countries(self):
+        country = input("Enter country: ").upper()
         self.__cursor.execute(
-            "SELECT Country, CountryCode, Slug, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, Date FROM Countries WHERE Country='"+country+"'")
+            "SELECT * FROM countries WHERE Country='" + country + "'")
         result = self.__cursor.fetchone()
         if result == None:
-            print("Country '"+country+"' not found")
-            return
-        # print(result)
-        print("-"*10+" Country info "+"-"*10)
-        for item in result:
-            print(item, ": ", result[item], sep="")
-        print("-"*30)
+            return ("Country " + country + " not found")
+        else:
+            return result
 
     def __search_by_country_code(self):
-        """3. Показати інформацію по коду країни (UA)"""
-        code = input("Enter country code (UA): ")
+        country = input("Enter country code: ").upper()
         self.__cursor.execute(
-            "SELECT Country, CountryCode, Slug, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, Date FROM Countries WHERE CountryCode='"+code+"'")
+            "SELECT * FROM countries WHERE CountryCode='" + country + "'")
         result = self.__cursor.fetchone()
         if result == None:
-            print("Country with code '"+code+"' not found")
-            return
-        # print(result)
-        print("-"*10+" Country info "+"-"*10)
-        for item in result:
-            print(item, ": ", result[item], sep="")
-        print("-"*33)
+            return ("Country code " + country + " not found")
+        else:
+            return result
 
+       
