@@ -25,7 +25,7 @@ class db_manager:
         exit = False
         while not exit:
             choice = int(input(
-                "1. Update data\n2. Search by country\n3. Search by country code\n0. Exit\n====>> "))
+                "1. Update data\n2. Search by country\n3. Search by country code\n4. Show top10 total_confirmed countries\n5. Show top10 total_recovered countries\n0. Exit\n====>> "))
             if choice == 1:
                 answer = self.__update_covid_data()
                 print(answer)
@@ -35,11 +35,19 @@ class db_manager:
             elif choice == 3:
                 answer = self.__search_by_country_code()
                 print(answer)
+            elif choice == 4:
+                answer = self.__top_total_confirmed()  
+                (answer)          
+            elif choice == 5:
+                answer = self.__top_total_recovered() 
+                print(answer)             
             elif choice == 0:
                 exit = True
                 print("Bye!")
             else:
                 print("Wrong choise")
+
+
 
     def __update_covid_data(self):
         covid_data = requests.get(COVID19_URL).json()
@@ -80,5 +88,25 @@ class db_manager:
             return ("Country code " + country + " not found")
         else:
             return result
+
+
+    def __top_total_confirmed(self):
+        self.__cursor.execute(
+            "SELECT * FROM countries ORDER BY TotalConfirmed DESC LIMIT 10")
+        result = self.__cursor.fetchall()        
+        for item in result:
+            print(item[1], '| TotalConfirmed - ', item[5])
+        return(print('-'*45))
+        
+
+    
+    def __top_total_recovered(self):
+        self.__cursor.execute(
+            "SELECT * FROM countries ORDER BY TotalRecovered DESC LIMIT 10")
+        result = self.__cursor.fetchall()
+        for item in result:
+            print(item[1], '| TotalRecovered - ', item[9])
+        return(print('-'*45))
+        
 
        
